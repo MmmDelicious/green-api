@@ -1,0 +1,153 @@
+:root {
+  --accent: #2b7bf3;
+  --bg: #eef1f5;
+  --border: #e3e6ea;
+  --muted: #8a9099;
+}
+
+input {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font: inherit;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--accent);
+}
+
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.error {
+  margin: 0;
+  color: #e5484d;
+  font-size: 14px;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 340px;
+  margin: 15vh auto;
+  padding: 32px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.login h1 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 320px;
+  border-right: 1px solid var(--border);
+  background: #fff;
+}
+
+.new-chat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.new-chat input {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-item {
+  padding: 16px;
+  background: #e8f0fe;
+  font-weight: 500;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.placeholder {
+  margin: auto;
+  color: var(--muted);
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  font-weight: 600;
+}
+
+.messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.message {
+  max-width: 60%;
+  padding: 8px 12px;
+  border-radius: 16px 16px 16px 4px;
+  background: #fff;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.message.outgoing {
+  align-self: flex-end;
+  border-radius: 16px 16px 4px 16px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.chat form {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  background: #fff;
+}
+
+.chat form input {
+  flex: 1;
+}
+
+.chat-error {
+  padding: 8px 20px 0;
+  background: #fff;
+}

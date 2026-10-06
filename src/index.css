@@ -4,5 +4,7 @@
 
 body {
   margin: 0;
+  background: #eef1f5;
   font-family: system-ui, sans-serif;
+  font-size: 15px;
 }
