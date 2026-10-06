@@ -209,7 +209,7 @@ button.link {
   background: #fff;
 }
 
-@media (min-width: 40rem) {
+@media (min-width: 48rem) {
   .sidebar,
   .chat-open .sidebar {
     display: block;
@@ -235,5 +235,12 @@ button.link {
 
   .chat form {
     padding-inline: 1.25rem;
+  }
+}
+
+@media (min-width: 90rem) {
+  .sidebar,
+  .chat-open .sidebar {
+    width: 25rem;
   }
 }
