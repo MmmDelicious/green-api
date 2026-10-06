@@ -1,17 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
-import { sendMessage } from './api'
-import type { Credentials } from './api'
-import { useChatMessages } from './useChatMessages'
+import { sendMessage } from '../api/greenApi'
+import type { ChatInfo, Credentials, Message } from '../types'
 
 type Props = {
   creds: Credentials
-  chatId: string
-  phone: string
+  chat: ChatInfo
+  messages: Message[]
+  onSent: (message: Message) => void
+  onBack: () => void
 }
 
-function Chat({ creds, chatId, phone }: Props) {
-  const { messages, addMessage } = useChatMessages(creds, chatId)
+function formatTime(time: number) {
+  return new Date(time).toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })
+}
+
+function Chat({ creds, chat, messages, onSent, onBack }: Props) {
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
@@ -27,8 +31,8 @@ function Chat({ creds, chatId, phone }: Props) {
     setSending(true)
     setError('')
     try {
-      const { idMessage } = await sendMessage(creds, chatId, message)
-      addMessage({ id: idMessage, text: message, outgoing: true })
+      const { idMessage } = await sendMessage(creds, chat.chatId, message)
+      onSent({ id: idMessage, chatId: chat.chatId, text: message, outgoing: true, time: Date.now() })
       setText('')
     } catch {
       setError('Не удалось отправить сообщение')
@@ -39,17 +43,23 @@ function Chat({ creds, chatId, phone }: Props) {
 
   return (
     <div className="chat">
-      <header>+{phone}</header>
+      <header>
+        <button className="back" onClick={onBack}>
+          ←
+        </button>
+        +{chat.phone}
+      </header>
       <div className="messages" ref={listRef}>
         {messages.map((m) => (
           <div key={m.id} className={m.outgoing ? 'message outgoing' : 'message'}>
             {m.text}
+            <span className="time">{formatTime(m.time)}</span>
           </div>
         ))}
       </div>
       {error && <p className="error chat-error">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <input placeholder="Сообщение" value={text} onChange={(e) => setText(e.target.value)} />
+        <input placeholder="Сообщение" value={text} onChange={(e) => setText(e.target.value)} autoFocus />
         <button disabled={sending || !text.trim()}>Отправить</button>
       </form>
     </div>

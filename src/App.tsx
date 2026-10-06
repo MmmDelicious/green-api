@@ -1,36 +1,25 @@
 import { useState } from 'react'
-import type { Credentials } from './api'
-import LoginForm from './LoginForm'
-import NewChat from './NewChat'
-import Chat from './Chat'
+import type { Credentials } from './types'
+import LoginForm from './components/LoginForm'
+import Messenger from './components/Messenger'
 import './App.css'
 
-type ChatInfo = {
-  chatId: string
-  phone: string
-}
+const STORAGE_KEY = 'credentials'
 
 function App() {
-  const [creds, setCreds] = useState<Credentials | null>(null)
-  const [chat, setChat] = useState<ChatInfo | null>(null)
+  const [creds, setCreds] = useState<Credentials | null>(() => JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? 'null'))
 
-  if (!creds) return <LoginForm onLogin={setCreds} />
+  function login(creds: Credentials) {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(creds))
+    setCreds(creds)
+  }
 
-  return (
-    <div className="layout">
-      <aside className="sidebar">
-        <NewChat creds={creds} onCreate={(chatId, phone) => setChat({ chatId, phone })} />
-        {chat && <div className="chat-item">+{chat.phone}</div>}
-      </aside>
-      <main className="main">
-        {chat ? (
-          <Chat key={chat.chatId} creds={creds} chatId={chat.chatId} phone={chat.phone} />
-        ) : (
-          <p className="placeholder">Введите номер телефона, чтобы начать чат</p>
-        )}
-      </main>
-    </div>
-  )
+  function logout() {
+    sessionStorage.removeItem(STORAGE_KEY)
+    setCreds(null)
+  }
+
+  return creds ? <Messenger creds={creds} onLogout={logout} /> : <LoginForm onLogin={login} />
 }
 
 export default App

@@ -1,24 +1,26 @@
-export type Credentials = {
-  idInstance: string
-  apiTokenInstance: string
-}
+import type { Credentials, Message } from '../types'
 
-export type Notification = {
+type Notification = {
   receiptId: number
   body: {
     typeWebhook: string
     idMessage: string
+    timestamp: number
     senderData?: { chatId: string }
     messageData?: {
       typeMessage: string
       textMessageData?: { textMessage: string }
+      extendedTextMessageData?: { text: string }
     }
   }
 }
 
-function url({ idInstance, apiTokenInstance }: Credentials, method: string) {
-  const host = `https://${idInstance.slice(0, 4)}.api.green-api.com`
-  return `${host}/waInstance${idInstance}/${method}/${apiTokenInstance}`
+export function defaultApiUrl(idInstance: string) {
+  return `https://${idInstance.slice(0, 4)}.api.green-api.com`
+}
+
+function url({ apiUrl, idInstance, apiTokenInstance }: Credentials, method: string) {
+  return `${apiUrl}/waInstance${idInstance}/${method}/${apiTokenInstance}`
 }
 
 async function request(input: string, init?: RequestInit) {
@@ -45,7 +47,7 @@ export async function checkAccount(creds: Credentials, phone: string): Promise<s
   return data.exist ? data.chatId : null
 }
 
-export function sendMessage(creds: Credentials, chatId: string, message: string) {
+export function sendMessage(creds: Credentials, chatId: string, message: string): Promise<{ idMessage: string }> {
   return post(url(creds, 'sendMessage'), { chatId, message })
 }
 
@@ -57,8 +59,16 @@ export function deleteNotification(creds: Credentials, receiptId: number) {
   return request(url(creds, 'deleteNotification') + '/' + receiptId, { method: 'DELETE' })
 }
 
-export function getIncomingText({ body }: Notification, chatId: string): string | null {
-  if (body.typeWebhook !== 'incomingMessageReceived') return null
-  if (body.senderData?.chatId !== chatId) return null
-  return body.messageData?.textMessageData?.textMessage ?? null
+export function parseMessage({ body }: Notification): Message | null {
+  const outgoing = body.typeWebhook === 'outgoingMessageReceived' || body.typeWebhook === 'outgoingAPIMessageReceived'
+  if (body.typeWebhook !== 'incomingMessageReceived' && !outgoing) return null
+  const text = body.messageData?.textMessageData?.textMessage ?? body.messageData?.extendedTextMessageData?.text
+  if (!text || !body.senderData) return null
+  return {
+    id: body.idMessage,
+    chatId: body.senderData.chatId,
+    text,
+    outgoing,
+    time: body.timestamp * 1000,
+  }
 }
