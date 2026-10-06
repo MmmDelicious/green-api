@@ -35,7 +35,7 @@ function NewChat({ creds, onCreate }: Props) {
 
   return (
     <form className="new-chat" onSubmit={handleSubmit}>
-      <input placeholder="Номер телефона" value={phone} onChange={(e) => setPhone(e.target.value)} />
+      <input name="phone" type="tel" autoComplete="tel" placeholder="Номер телефона" value={phone} onChange={(e) => setPhone(e.target.value)} />
       <button disabled={loading || !phone}>Создать чат</button>
       {error && <p className="error">{error}</p>}
     </form>

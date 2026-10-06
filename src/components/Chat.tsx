@@ -59,7 +59,7 @@ function Chat({ creds, chat, messages, onSent, onBack }: Props) {
       </div>
       {error && <p className="error chat-error">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <input placeholder="Сообщение" value={text} onChange={(e) => setText(e.target.value)} autoFocus />
+        <input autoComplete="off" placeholder="Сообщение" value={text} onChange={(e) => setText(e.target.value)} autoFocus />
         <button disabled={sending || !text.trim()}>Отправить</button>
       </form>
     </div>
