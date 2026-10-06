@@ -10,12 +10,12 @@ export function useMessages(creds: Credentials) {
   }, [])
 
   useEffect(() => {
-    let active = true
+    const controller = new AbortController()
 
     async function poll() {
-      while (active) {
+      while (!controller.signal.aborted) {
         try {
-          const notification = await receiveNotification(creds)
+          const notification = await receiveNotification(creds, controller.signal)
           if (!notification) continue
           const message = parseMessage(notification)
           if (message) addMessage(message)
@@ -27,9 +27,7 @@ export function useMessages(creds: Credentials) {
     }
 
     poll()
-    return () => {
-      active = false
-    }
+    return () => controller.abort()
   }, [creds, addMessage])
 
   return { messages, addMessage }

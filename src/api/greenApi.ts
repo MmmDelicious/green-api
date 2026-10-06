@@ -48,8 +48,8 @@ export function sendMessage(creds: Credentials, chatId: string, message: string)
   return post(url(creds, 'sendMessage'), { chatId, message })
 }
 
-export function receiveNotification(creds: Credentials): Promise<Notification | null> {
-  return request(url(creds, 'receiveNotification') + '?receiveTimeout=5')
+export function receiveNotification(creds: Credentials, signal: AbortSignal): Promise<Notification | null> {
+  return request(url(creds, 'receiveNotification') + '?receiveTimeout=5', { signal })
 }
 
 export function deleteNotification(creds: Credentials, receiptId: number) {

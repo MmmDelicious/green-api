@@ -30,13 +30,15 @@ function LoginForm({ onLogin }: Props) {
   }
 
   return (
-    <form className="login" onSubmit={handleSubmit}>
-      <h1>Вход</h1>
-      <input name="idInstance" autoComplete="username" placeholder="idInstance" value={idInstance} onChange={(e) => setIdInstance(e.target.value)} />
-      <input name="apiTokenInstance" type="password" autoComplete="current-password" placeholder="apiTokenInstance" value={apiTokenInstance} onChange={(e) => setApiTokenInstance(e.target.value)} />
-      <button disabled={loading || !idInstance || !apiTokenInstance}>Войти</button>
-      {error && <p className="error">{error}</p>}
-    </form>
+    <main>
+      <form className="login" onSubmit={handleSubmit}>
+        <h1>Вход</h1>
+        <input name="idInstance" autoComplete="username" placeholder="idInstance" value={idInstance} onChange={(e) => setIdInstance(e.target.value)} />
+        <input name="apiTokenInstance" type="password" autoComplete="current-password" placeholder="apiTokenInstance" value={apiTokenInstance} onChange={(e) => setApiTokenInstance(e.target.value)} />
+        <button disabled={loading || !idInstance || !apiTokenInstance}>Войти</button>
+        {error && <p className="error">{error}</p>}
+      </form>
+    </main>
   )
 }
 
