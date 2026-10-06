@@ -169,6 +169,7 @@ button.link {
 }
 
 .message {
+  align-self: flex-start;
   max-width: min(75%, 32rem);
   padding: 0.5rem 0.75rem;
   border-radius: 1rem 1rem 1rem 0.25rem;
