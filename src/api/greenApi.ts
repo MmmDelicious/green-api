@@ -15,12 +15,9 @@ type Notification = {
   }
 }
 
-export function defaultApiUrl(idInstance: string) {
-  return `https://${idInstance.slice(0, 4)}.api.green-api.com`
-}
-
-function url({ apiUrl, idInstance, apiTokenInstance }: Credentials, method: string) {
-  return `${apiUrl}/waInstance${idInstance}/${method}/${apiTokenInstance}`
+function url({ idInstance, apiTokenInstance }: Credentials, method: string) {
+  const host = `https://${idInstance.slice(0, 4)}.api.green-api.com`
+  return `${host}/waInstance${idInstance}/${method}/${apiTokenInstance}`
 }
 
 async function request(input: string, init?: RequestInit) {
