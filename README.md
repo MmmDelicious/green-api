@@ -12,6 +12,20 @@
 - Получение сообщений через [HTTP API](https://green-api.com/telegram/docs/api/receiving/technology-http-api/) (`receiveNotification` / `deleteNotification`)
 - Несколько чатов в боковой панели, адаптивная вёрстка для мобильных
 
+## Скриншоты
+
+Чат в приложении и та же переписка в Telegram:
+
+![Чат](docs/text.png)
+
+Вход:
+
+![Вход](docs/login.png)
+
+Мобильная версия:
+
+<img src="docs/mobile.png" alt="Мобильная версия" width="480">
+
 ## Локальный запуск
 
 Нужен Node.js 20 или новее.
